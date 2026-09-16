@@ -2,7 +2,7 @@ const form = document.getElementById('searchForm');
 const input = document.getElementById('searchInput');
 const results = document.getElementById('results');
 
-form.addEventListener('submit', function (event) {
+form.addEventListener('submit', async function (event) {
     event.preventDefault();
 
     const query = input.value.trim();
@@ -11,22 +11,13 @@ form.addEventListener('submit', function (event) {
         results.textContent = 'Please enter a query.';
         return;
     }
-//    results.textContent = `You searched for: ${query}`;
-    const searchRes = [
-        {
-            title: 'First result',
-            url: 'https://',
-            description: 'This is the description of the first search result.'
-        },
-        {
-            title: 'Second result',
-            url: 'https://',
-            description: 'This is the description of the second search result.'
-        }
-    ];
+
+    const response = await fetch (`/api/search?q=${encodeURIComponent(query)}`);
+    const data = await response.json();
+
     results.innerHTML = '';
 
-    searchRes.forEach(function (result) {
+    data.results.forEach(function (result) {
         results.innerHTML += `
             <div>
                 <h2>${result.title}</h2>
