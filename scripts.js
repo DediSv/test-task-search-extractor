@@ -2,12 +2,14 @@ const form = document.getElementById('searchForm');
 const input = document.getElementById('searchInput');
 const results = document.getElementById('results');
 
+const searchButton = document.getElementById('searchButton');
 const downloadButton = document.getElementById('downloadButton');
 
 let lastSearchData = null;
 
 form.addEventListener('submit', async function (event) {
     event.preventDefault();
+
     downloadButton.style.display = 'none';
     lastSearchData = null;
 
@@ -18,23 +20,41 @@ form.addEventListener('submit', async function (event) {
         return;
     }
 
-    const response = await fetch (`/api/search?q=${encodeURIComponent(query)}`);
-    const data = await response.json();
+    results.textContent = 'Searching...';
+    searchButton.disabled = true;
 
-    lastSearchData = data;
-    downloadButton.style.display = 'block';
+    try {
+        const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
+        const data = await response.json();
 
-    results.innerHTML = '';
+        if (!response.ok) {
+            throw new Error(data.error || 'Search failed');
+        }
 
-    data.results.forEach(function (result) {
-        results.innerHTML += `
-            <div>
-                <h2>${result.title}</h2>
-                <a href = "${result.url}"> ${result.url} </a>
-                <p>${result.description}</p>
-            </div>
-        `;
-    });
+        if (data.results.length === 0) {
+            results.textContent = 'No results found.';
+            return;
+        }
+
+        lastSearchData = data;
+        downloadButton.style.display = 'block';
+
+        results.innerHTML = '';
+
+        data.results.forEach(function (result) {
+            results.innerHTML += `
+                <div>
+                    <h2>${result.title}</h2>
+                    <a href = "${result.url}"> ${result.url} </a>
+                    <p>${result.description}</p>
+                </div>
+            `;
+        });
+    } catch (err) {
+        results.textContent = `Error: ${err.message}`;
+    } finally {
+        searchButton.disabled = false;
+    }
 });
 
 downloadButton.addEventListener('click', function () {
