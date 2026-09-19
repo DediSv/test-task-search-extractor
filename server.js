@@ -49,6 +49,14 @@ app.get('/api/search', async function (req, res) {
     }
 });
 
-app.listen(PORT, function () {
-    console.log(`Server is running on http://localhost:${PORT}`);
-});
+//app.listen(PORT, function () {
+//    console.log(`Server is running on http://localhost:${PORT}`);
+//});
+
+if (require.main === module) {
+    app.listen(PORT, function () {
+        console.log(`Server is running on http://localhost:${PORT}`);
+    });
+}
+
+module.exports = app;
