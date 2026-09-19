@@ -4,7 +4,7 @@ const { transformSearchResults } = require('./searchUtils');
 const app = express();
 const PORT = 12345;
 
-app.use(express.static(__dirname));
+app.use(express.static('public'));
 
 app.get('/api/search', async function (req, res) {
     const query = req.query.q;

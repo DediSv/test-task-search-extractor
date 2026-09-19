@@ -20,8 +20,8 @@ form.addEventListener('submit', async function (event) {
         return;
     }
 
-    results.textContent = 'Searching...';
     searchButton.disabled = true;
+    searchButton.textContent = 'Searching...';
 
     try {
         const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
@@ -54,6 +54,7 @@ form.addEventListener('submit', async function (event) {
         results.textContent = `Error: ${err.message}`;
     } finally {
         searchButton.disabled = false;
+        searchButton.textContent = 'Search';
     }
 });
 
@@ -64,8 +65,20 @@ downloadButton.addEventListener('click', function () {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'search-results.json';
+
+    const fileName = lastSearchData.query
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/gi, '-')
+        .replace(/^-|-$/g, '');
+
+    link.download = `${fileName || 'search-results'}.json`;
     link.click();
 
     URL.revokeObjectURL(url);
+
+    downloadButton.textContent = 'Downloading...';
+
+    setTimeout(function () {
+        downloadButton.textContent = 'Download JSON';
+    }, 1200);
 });

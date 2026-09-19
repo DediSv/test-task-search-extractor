@@ -1,7 +1,7 @@
 {
   "name": "testtasksearch",
   "version": "1.0.0",
-  "main": "scripts.js",
+  "main": "public/scripts.js",
   "scripts": {
     "test": "vitest run --globals"
   },

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Search Extractor</title>
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main>
+        <header class="app-header">
+            <h1>Google Search Extractor</h1>
+            <p class="subtitle">
+                Search Google organic results and export them as JSON.
+            </p>
+        </header>
+
+        <section class="search-section">
+            <form id="searchForm" class="search-form">
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Type keywords here"
+                    autocomplete="off"
+                    required
+                >
+                <button
+                    type="submit"
+                    id="searchButton"
+                >
+                    Search
+                </button>
+            </form>
+
+            <div class="actions">
+                <button
+                    type="button"
+                    id="downloadButton"
+                    style="display: none;"
+                >
+                    Download JSON
+                </button>
+            </div>
+        </section>
+
+        <section
+            id="results"
+            class="results"
+        ></section>
+    </main>
+
+    <script src="scripts.js"></script>
+</body>
+</html>
