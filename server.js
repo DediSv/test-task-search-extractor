@@ -1,4 +1,5 @@
 const express = require('express');
+const { transformSearchResults } = require('./searchUtils');
 
 const app = express();
 const PORT = 12345;
@@ -34,14 +35,7 @@ app.get('/api/search', async function (req, res) {
             });
         }
 
-        const searchResults = (data.organic_results || []).map(function (result) {
-            return {
-                position: result.position,
-                title: result.title,
-                url: result.link,
-                description: result.snippet,
-            };
-        });
+        const searchResults = transformSearchResults(data.organic_results);
 
         res.json({
             query: query,
