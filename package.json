@@ -1,14 +1,16 @@
 {
   "name": "testtasksearch",
   "version": "1.0.0",
-  "main": "public/scripts.js",
+  "private": true,
+  "main": "server.js",
   "scripts": {
+    "dev": "node --env-file=.env server.js",
+    "start": "node server.js",
     "test": "vitest run --globals"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "description": "",
+  "description": "Google organic search results extractor, test task 4job",
   "dependencies": {
     "express": "^5.2.1"
   },

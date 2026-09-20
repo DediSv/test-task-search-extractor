@@ -10,15 +10,15 @@ let lastSearchData = null;
 form.addEventListener('submit', async function (event) {
     event.preventDefault();
 
-    downloadButton.style.display = 'none';
-    lastSearchData = null;
-
     const query = input.value.trim();
 
     if (query === '') {
-        results.textContent = 'Please enter a query.';
+        input.focus();
         return;
     }
+
+    downloadButton.style.display = 'none';
+    lastSearchData = null;
 
     searchButton.disabled = true;
     searchButton.textContent = 'Searching...';
@@ -32,6 +32,7 @@ form.addEventListener('submit', async function (event) {
         }
 
         if (data.results.length === 0) {
+            results.classList.add('status-message');
             results.textContent = 'No results found.';
             return;
         }
@@ -39,6 +40,7 @@ form.addEventListener('submit', async function (event) {
         lastSearchData = data;
         downloadButton.style.display = 'block';
 
+        results.classList.remove('status-message');
         results.innerHTML = '';
 
         data.results.forEach(function (result) {
@@ -46,12 +48,13 @@ form.addEventListener('submit', async function (event) {
                 <div>
                     <h2>${result.title}</h2>
                     <a href = "${result.url}"> ${result.url} </a>
-                    <p>${result.description}</p>
+                    <p>${result.description || ''}</p>
                 </div>
             `;
         });
     } catch (err) {
         results.textContent = `Error: ${err.message}`;
+        results.classList.add('status-message');
     } finally {
         searchButton.disabled = false;
         searchButton.textContent = 'Search';
